@@ -34,6 +34,7 @@ def _gen_cup_df(folder: str, year: int):
             match_players_crawl = match.get_match(game['link'])
 
             # This does not work for https://fbref.com/en/matches/0a93d0e2/Brazil-Croatia-June-12-2014-FIFA-World-Cup ?
+            # No 'SCA' in table, as opposed to https://fbref.com/en/matches/c9d7e48c/Russia-Saudi-Arabia-June-14-2018-FIFA-World-Cup
             pp.pprint(match_players_crawl)
             pp.pprint(game)
             exit()
