@@ -63,7 +63,7 @@ class Match:
 
         home = False
         guest = False
-        home_players, guest_players = None, None
+        home_players, away_players = None, None
 
         for idx, table in enumerate(df):
 
@@ -76,10 +76,10 @@ class Match:
 
             if table_type == 'players' and not guest:
                 guest = True
-                guest_players = self._get_players(table)
+                away_players = self._get_players(table)
                 continue
 
         return {
             'home': home_players,
-            'guest': guest_players
+            'away': away_players
         }
