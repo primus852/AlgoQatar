@@ -4,7 +4,20 @@ import pandas as pd
 class Player:
 
     def get_player_stats(self, player: str, hash_id: str, player_type: str) -> dict:
-        df = pd.read_html('https://fbref.com/en/players/{}/nat_tm/{}-National-Team-Stats'.format(hash_id, player))
+
+        try:
+            df = pd.read_html('https://fbref.com/en/players/{}/nat_tm/{}-National-Team-Stats'.format(hash_id, player))
+        except:
+            return {
+                'total_matches': 0,
+                'goals_per_90': 0,
+                'complete_pass_pct': 0,
+                'progessive_pass_distance': 0,
+                'aerial_won_pct': 0,
+                'fouls_per_90': 0,
+                'goalie_save_pct': 0,
+                'player_type': player_type
+            }
 
         total_matches, goals_per_90 = None, None
         complete_pass_pct, progressive_pass_distance = None, None

@@ -1,24 +1,17 @@
 import pandas as pd
-import undetected_chromedriver as uc
-from selenium import webdriver
 from selenium.webdriver.common.by import By
+import undetected_chromedriver as uc
 
 
 class Match:
 
-    def __init__(self):
-
-        options = webdriver.ChromeOptions()
-        options.headless = True
-        options.add_argument("start-maximized")
-        options.add_experimental_option("excludeSwitches", ["enable-automation"])
-        options.add_experimental_option('useAutomationExtension', False)
-        self.__driver = uc.Chrome(executable_path="chrome/chromedriver.exe", chrome_options=options)
+    def __init__(self, driver: uc.Chrome):
+        self.__driver = driver
 
     @staticmethod
     def _get_match_table_type(player_table: pd.DataFrame):
         # Search for "Home Team Player" Table
-        if 'Performance' in player_table and 'SCA' in player_table:
+        if 'Performance' in player_table:
             if 'Gls' in player_table['Performance'].iloc[0]:
                 return 'players'
 
@@ -61,6 +54,21 @@ class Match:
         df = pd.read_html(match_link)
         self.__driver.get(match_link)
 
+        scores = self.__driver.find_elements(By.CLASS_NAME, 'score')
+
+        match_count = 1
+        score_home = None
+        score_away = None
+        for score in scores:
+            if match_count == 1:
+                match_count += 1
+                score_home = int(score.text)
+                continue
+            if match_count == 2:
+                match_count += 1
+                score_away = int(score.text)
+                continue
+
         home = False
         guest = False
         home_players, away_players = None, None
@@ -81,5 +89,9 @@ class Match:
 
         return {
             'home': home_players,
-            'away': away_players
+            'away': away_players,
+            'score': {
+                'home': score_home,
+                'away': score_away
+            }
         }
