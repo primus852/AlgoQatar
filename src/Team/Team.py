@@ -1,5 +1,6 @@
 import time
 from src.Player import Player
+from src.Util import Util
 from selenium.webdriver.common.by import By
 import pandas as pd
 from tqdm import tqdm
@@ -21,21 +22,23 @@ class Team:
 
         self.__driver.get(kader_link)
 
-        player_links = self.__driver.find_elements(By.XPATH, '//table[contains(@id,"stats_standard_1")]'
-                                                             '//th[@data-stat="player"]/a')
+        player_links = self.__driver.find_elements(By.XPATH, '//table[1]/tbody/tr/th[@data-stat="player"]/a')
 
         idx = 0
         for player in tqdm(player_links, desc='Players'):
-            player_pos = self.__driver.find_element(By.XPATH,
-                                                    "//tr[@data-row='{}']/td[@data-stat='position']".format(idx)).text
+            try:
+                player_pos = self.__driver.find_element(By.XPATH,
+                                                        "//tr[@data-row='{}']/td[@data-stat='position']"
+                                                        .format(idx)).text
+            except:
+                break
 
             link = player.get_attribute('href').split('/')[-2:]
             url_hash = link[0]
             url_name = link[1]
+            unique_player = url_name + '_' + url_hash
 
             stats_player_normal = self.__player.get_player_stats(url_name, url_hash, player_pos)
-
-            unique_player = url_name + '_' + url_hash
 
             if unique_player not in df_main:
                 df_main = pd.concat([df_main, pd.DataFrame.from_records({
@@ -52,5 +55,8 @@ class Team:
 
             idx += 1
             time.sleep(3.5)
+            # Only get the top 25
+            if idx == 26:
+                break
 
         return df_main
