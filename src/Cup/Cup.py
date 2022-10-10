@@ -18,6 +18,10 @@ class Cup:
         self.__match = Match(self.__driver)
         self.__team = Team(self.__driver)
 
+    def crawl_team(self, team_link: str, team_name: str):
+        kader = self.__team.get_kader_by_year(team_link)
+        kader.to_csv('data/wcCurrent/{}.csv'.format(team_name))
+
     def crawl_teams(self):
 
         if not os.path.exists('data/wcCurrent'):

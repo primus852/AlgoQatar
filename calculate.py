@@ -10,8 +10,8 @@ if __name__ == '__main__':
     # Build the final DataFrame
     df = stats.create_final_df()
 
-    home = 'Qatar'
-    away = 'Ecuador'
+    home = input('Team Home: ')
+    away = input('Team Away: ')
 
     stats = poisson.calculate(df.loc[home]['lam_cups'], df.loc[away]['lam_cups'], home, away, plot=True)
 
@@ -27,8 +27,7 @@ if __name__ == '__main__':
 
     print('Top 3 Scores:')
     print('\t{}:'.format(home))
-    print('\t\t{}: {} Goal(s)'.format(list(stats['home']['top3'].keys())[0],
-                                      stats['home']['top3'][list(stats['home']['top3'].keys())[0]]))
+    print('\t\t{}: {} Goal(s)'.format(list(stats['home']['top3'].keys())[0],stats['home']['top3'][list(stats['home']['top3'].keys())[0]]))
     print('\t\t{}: {} Goal(s)'.format(list(stats['home']['top3'].keys())[1],
                                       stats['home']['top3'][list(stats['home']['top3'].keys())[1]]))
     try:

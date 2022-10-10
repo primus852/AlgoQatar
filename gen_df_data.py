@@ -12,12 +12,12 @@ if __name__ == '__main__':
     cup = Cup(driver)
     stats = Statistic()
 
+    # TODO: Make this dynamic (argparse) and robust to errors
+    wcs = [2018, 2014, 2010, 2006, 2002]
+
     # Crawl all previous Cups
-    cup.crawl_cup_df(2018)
-    cup.crawl_cup_df(2014)
-    cup.crawl_cup_df(2010)
-    cup.crawl_cup_df(2006)
-    cup.crawl_cup_df(2002)
+    for wc in wcs:
+        cup.crawl_cup_df(wc)
 
     # Crawl current cup and put all in one folder
     cup.crawl_teams()

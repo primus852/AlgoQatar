@@ -486,7 +486,7 @@ class Util:
 
         driver.get('https://fbref.com/en/')
         time.sleep(2)
-        agree_button = driver.find_element(By.XPATH, "//button[contains(text(),'AGREE')]")
+        agree_button = driver.find_element(By.XPATH, "//span[contains(text(),'AGREE')]")
         agree_button.click()
 
         return driver
